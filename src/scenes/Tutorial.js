@@ -6,7 +6,7 @@ class Tutorial extends Phaser.Scene {
     create() {
         let tutorialConfig = {
             fontFamily: 'Georgia',
-            fontSize: '30px',
+            fontSize: '64px',
             //backgroundColor: '#000000',
             color: '#FFFFFF',
             align: 'left',
@@ -17,7 +17,12 @@ class Tutorial extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        this.add.image(0, 0, 'dirt').setScale(0.55).setOrigin(0.2, 0)
+        this.add.image(0, 100, 'dirt3').setScale(1).setOrigin(0, 0)
+
+        this.add.rectangle(0, 0, game.config.width, 100, 0x000000).setOrigin(0,0)
+
+        this.add.text(game.config.width/2, game.config.height/2 - 490, 
+            'Driller\'s Dream', tutorialConfig).setOrigin(0.5)
 
         tutorialConfig.fontSize = '30px'
         this.add.text(game.config.width/2, game.config.height/2 - 150, 

@@ -4,7 +4,10 @@ class Title extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('dirt', './assets/Dirt.png')
+        //this.load.image('dirt', './assets/Dirt.png')
+        //this.textures.get('dirt').setFilter(Phaser.Textures.FilterMode.NEAREST);
+        //this.load.image('dirt2', './assets/tileddirt.png')
+        this.load.image('dirt3', './assets/dirt3.png')
         this.load.image('fossil', './assets/Fossil.png')
         this.load.image('barrel', './assets/Oil_Barrel.png')
         this.load.spritesheet('drill', './assets/Drillspritesheet.png', {
@@ -58,12 +61,14 @@ class Title extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        this.add.image(0, 0, 'dirt').setScale(0.55).setOrigin(0.2, 0)
+        this.add.image(0, 100, 'dirt3').setScale(1).setOrigin(0, 0)
 
-        this.add.text(game.config.width/2, game.config.height/2 - 350, 
+        this.add.rectangle(0, 0, game.config.width, 100, 0x000000).setOrigin(0,0)
+
+        this.add.text(game.config.width/2, game.config.height/2 - 490, 
             'Driller\'s Dream', menuConfig).setOrigin(0.5)
+
         menuConfig.fontSize = '30px'
-        
         this.add.text(game.config.width/2, game.config.height/2 - 100, 
             'Press T to view the tutorial', menuConfig).setOrigin(0.5)
         this.add.text(game.config.width/2, game.config.height/2 - 50, 

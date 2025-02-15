@@ -37,6 +37,22 @@ class Play extends Phaser.Scene {
 
         this.gameOver = false
 
+        this.obstacles = this.add.group({
+            runChildUpdate: true    // make sure update runs on group children
+        });
+
+        this.time.delayedCall(2500, () => { 
+            this.addObstacle(); 
+        });
+
+        this.difficultyTimer = this.time.addEvent({
+            delay: 1000,
+            callback: this.levelBump,
+            callbackScope: this,
+            loop: true
+        });
+
+        this.obstacleX = 50;
 
         this.keys = this.input.keyboard.createCursorKeys()
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
@@ -52,6 +68,20 @@ class Play extends Phaser.Scene {
         }
         */
 
+        this.obstacleX = Phaser.Math.Between(50, game.config.width - 50)
+    }
+
+    addObstacle() {
+        //let speed = game.settings.moveSpeed
+        if(Phaser.Math.Between(0, 1) === 1) {
+            let xPos = this.obstacleX //Phaser.Math.Between(50, game.config.width - 50)
+            this.obstacle = new Fossil(this, xPos, game.config.height, 'fossil').setScale(0.5).setOrigin(0.5, 0)
+        }
+        else {
+            let xPos = this.obstacleX//Phaser.Math.Between(50, game.config.width - 50)
+            this.obstacle = new Barrel(this, xPos, game.config.height, 'barrel').setScale(0.5).setOrigin(0.5, 0)
+        }
+        this.obstacles.add(this.obstacle);
     }
 
 }

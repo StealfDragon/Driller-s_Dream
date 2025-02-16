@@ -21,6 +21,7 @@ class Play extends Phaser.Scene {
         this.drill.setOffset(45, 40)
 
         this.score = 0;
+        this.leveled = false
 
         let playConfig = {
             fontFamily: 'Georgia',
@@ -37,7 +38,18 @@ class Play extends Phaser.Scene {
 
         this.showScore = this.add.text(50, 20, 'Obstacles Dodged: ' + this.score, playConfig)
 
+        /*
+        this.difficultyTimer = this.time.addEvent({
+            delay: 1000,
+            callback: this.increaseLevel(),
+            callbackScope: this,
+            loop: true
+        });
+        */
+
         this.gameOver = false
+        this.sceneTransition = false
+        this.fossilCollided = false
 
         this.obstacles = this.add.group({
             runChildUpdate: true    // make sure update runs on group children
@@ -68,25 +80,55 @@ class Play extends Phaser.Scene {
         this.keys = this.input.keyboard.createCursorKeys()
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
+
+        this.bgm = this.sound.add('sfx-music', { 
+            mute: false,
+            volume: 1,
+            rate: 1,
+            loop: true 
+        });
+        this.bgm.play();
     }
 
     update() {
+        if(this.score > 0 && this.score % 5 == 0 && !this.leveled) {
+            game.settings.groundSpeed += 0.5
+            console.log(game.settings.groundSpeed)
+            this.leveled = true
+        }
+        if(this.gameOver && this.sceneTransition) {
+            this.bgm.stop();
+            this.sound.play('sfx-game_over')
+            this.scene.start('gameOverScene')    
+        }
         if(!this.gameOver) {
-            this.background.tilePositionY = Math.floor(this.background.tilePositionY + 4);
-        
+            // this.background.tilePositionY = Math.floor(this.background.tilePositionY + game.settings.groundSpeed);
+            this.background.tilePositionY += game.settings.groundSpeed
 
-            if (keyLEFT.isDown) {
-                this.buttonPressed = true;
-                this.drill.direction = -1; // Moving left
-            } 
-            else if (keyRIGHT.isDown) {
-                this.buttonPressed = true;
-                this.drill.direction = 1; // Moving right
+            if(!(this.fossilCollided)) {
+                if (keyLEFT.isDown) {
+                    this.buttonPressed = true;
+                    this.drill.direction = -1; // Moving left
+                } 
+                else if (keyRIGHT.isDown) {
+                    this.buttonPressed = true;
+                    this.drill.direction = 1; // Moving right
+                }
+            
+                if (this.buttonPressed) {
+                // Apply velocity based on last direction
+                    this.drill.setVelocityX(this.drill.direction * game.settings.moveSpeed);
+                }
             }
-        
-            if (this.buttonPressed) {
-            // Apply velocity based on last direction
-                this.drill.setVelocityX(this.drill.direction * game.settings.moveSpeed);
+
+            if(this.fossilCollided) {
+                this.drill.y -= game.settings.groundSpeed
+                //console.log(this.drill.y)
+            }
+
+            if(this.drill.y <= -55) {
+                this.gameOver = true
+                this.sceneTransition = true
             }
             
             
@@ -112,7 +154,7 @@ class Play extends Phaser.Scene {
         //let speed = game.settings.moveSpeed
         //console.log("addObstacle() called");
         let rand = Math.random() < 0.5
-        console.log(rand ? "Fossil" : "Barrel");
+        //console.log(rand ? "Fossil" : "Barrel");
         if(rand) {
             let xPos = this.obstacleX //Phaser.Math.Between(50, game.config.width - 50)
             this.obstacle = new Fossil(this, xPos, game.config.height, 'fossil').setScale(0.5).setOrigin(0.5, 0)
@@ -124,21 +166,10 @@ class Play extends Phaser.Scene {
         this.obstacles.add(this.obstacle);
     }
 
-    drillCollision() {
-        console.log('drill collided')
-        this.gameOver = true
-
-        /*
-        paddle.destroyed = true;                    // turn off collision checking
-        this.difficultyTimer.destroy();             // shut down timer
-        this.sound.play('death', { volume: 0.25 }); // play death sound
-       
-        // kill paddle
-        paddle.destroy();    
-
-        // switch states after timer expires
-        this.time.delayedCall(4000, () => { this.scene.start('gameOverScene'); });
-        */
+    fossilCollision() {
+        this.drill.stop()
+        this.drill.setVelocityX(0)
+        //this.drill.setVelocityY(-4)
     }
 
     barrelExplode(barrel, barrelx, barrely) {
@@ -149,14 +180,13 @@ class Play extends Phaser.Scene {
         this.drill.stop()
         this.drill.setVelocityX(0)
         boom.anims.play('explode')
+        this.sound.play('sfx-explosion') 
         this.drill.alpha = 0;
         this.drill.destroy()            // play explode animation
         boom.on('animationcomplete', () => {   // callback after anim completes                  
             barrel.destroy()                     // make ship visible again
-            boom.destroy()                     // remove explosion sprite
+            boom.destroy()  
+            this.sceneTransition = true                   // remove explosion sprite
         })
-
-        this.sound.play('sfx-explosion')  
     }
-
 }

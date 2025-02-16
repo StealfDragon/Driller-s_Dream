@@ -94,7 +94,8 @@ class Title extends Phaser.Scene {
     update() {
         if (Phaser.Input.Keyboard.JustDown(keySTART)) {
             game.settings = {
-                moveSpeed: 150,   
+                moveSpeed: 150, 
+                groundSpeed: 4  
               }
             this.sound.play('sfx-select')
             this.scene.start('playScene')    

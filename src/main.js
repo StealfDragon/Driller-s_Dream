@@ -14,7 +14,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true,
+            debug: false,
             /*
             gravity: {
                 x: 0,
@@ -23,16 +23,19 @@ let config = {
             */
         }
     },
-    scene: [ Title, Play, Credits, Tutorial, ]
+    scene: [ Title, Play, Credits, Tutorial, GameOver, ]
 }
 
 let game = new Phaser.Game(config)
 
-let keyLEFT, keyRIGHT, keyTUTORIAL, keyCREDITS, keySTART
+let keyLEFT, keyRIGHT, keyTUTORIAL, keyCREDITS, keySTART, keyMENU, keyRESTART
 
 let centerX = game.config.width/2;
 let centerY = game.config.height/2;
 let upperY = game.config.height/3;
+let level;
+let highScore;
+let newHighScore = false;
 
 /*
 let borderUISize = game.config.height /15

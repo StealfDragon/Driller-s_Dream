@@ -11,25 +11,27 @@ class Obstacle extends Phaser.Physics.Arcade.Sprite {
         this.newObstacle = true;      
         this.passedDrill = false; 
         this.hasExploded = false;  
+        this.hasPlayed = false
     }
 
     update() {
         if(!(this.parentScene.gameOver)) {
-            this.y -= 4// this.moveSpeed
+            this.y -= game.settings.groundSpeed // this.moveSpeed
 
             if(this.newObstacle && this.y < centerY && this.texture.key == 'barrel') {
-                console.log('barrel spawn')
+                //console.log('barrel spawn')
                 this.parentScene.addObstacle();
                 this.newObstacle = false;
             }
             else if(this.newObstacle && this.y < upperY) {
-                console.log('fossil spawn')
+                //console.log('fossil spawn')
                 this.parentScene.addObstacle();
                 this.newObstacle = false;
             }
 
             if(this.y + this.height / 2 < game.config.height - 950 && this.passedDrill == false) {
                 this.parentScene.score += 1
+                this.parentScene.leveled = false
                 this.passedDrill = true
             }
 
@@ -47,7 +49,12 @@ class Obstacle extends Phaser.Physics.Arcade.Sprite {
             }
 
             if(this.texture.key == 'fossil' && this.parentScene.physics.world.collide(this.parentScene.drill, this)) {
-                
+                if (!this.hasPlayed) {
+                    this.parentScene.sound.play('sfx-thunk')
+                    this.hasPlayed = true
+                }
+                this.parentScene.fossilCollided = true
+                this.parentScene.fossilCollision()
             }
         }
 

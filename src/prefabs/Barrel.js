@@ -1,6 +1,7 @@
 class Barrel extends Obstacle {
-    constructor(scene, x, y, texture, frame) {
+    constructor(scene, x, y, texture) {
         super(scene, x, y, 'barrel')
+        //texture = 'barrel'
     }
 
     explode() {

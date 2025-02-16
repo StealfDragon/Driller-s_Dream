@@ -28,10 +28,11 @@ let config = {
 
 let game = new Phaser.Game(config)
 
-let keyLEFT, keyRIGHT, keyTUTORIAL, keyCREDITS
+let keyLEFT, keyRIGHT, keyTUTORIAL, keyCREDITS, keySTART
 
 let centerX = game.config.width/2;
 let centerY = game.config.height/2;
+let upperY = game.config.height/3;
 
 /*
 let borderUISize = game.config.height /15

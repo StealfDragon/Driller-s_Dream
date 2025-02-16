@@ -72,7 +72,7 @@ class Title extends Phaser.Scene {
         this.add.text(game.config.width/2, game.config.height/2 - 100, 
             'Press T to view the tutorial', menuConfig).setOrigin(0.5)
         this.add.text(game.config.width/2, game.config.height/2 - 50, 
-            'Press → to start the game', menuConfig).setOrigin(0.5)
+            'Press S to start the game', menuConfig).setOrigin(0.5)
 
         menuConfig.fontSize = '20px'
         this.add.text(game.config.width/2, game.config.height/2 + 450, 
@@ -81,14 +81,15 @@ class Title extends Phaser.Scene {
         this.keys = this.input.keyboard.createCursorKeys()
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
+        keySTART = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
         keyTUTORIAL =  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T)
         keyCREDITS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
     }
 
     update() {
-        if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
+        if (Phaser.Input.Keyboard.JustDown(keySTART)) {
             game.settings = {
-                moveSpeed: 3,   
+                moveSpeed: 150,   
               }
             this.sound.play('sfx-select')
             this.scene.start('playScene')    

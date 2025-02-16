@@ -8,7 +8,7 @@ class Play extends Phaser.Scene {
         //this.background = this.add.tileSprite(0, 100, 2048, 2048, 'dirt2').setScale(0.55).setOrigin(0.2, 0)
         this.background = this.add.tileSprite(0, 100, 2048, 2048, 'dirt3').setScale(1).setOrigin(0, 0)
 
-        this.add.rectangle(0, 0, game.config.width, 100, 0x000000).setOrigin(0,0)
+        this.scoreArea = this.add.rectangle(0, 0, game.config.width, 100, 0x000000).setOrigin(0,0)
 
         this.anims.create({
             key: 'drillAnim',
@@ -17,6 +17,8 @@ class Play extends Phaser.Scene {
             repeat: -1
         })
         this.drill = new Drill(this, game.config.width/2, game.config.height - 900, 'drill').setScale(0.25).setOrigin(0.5, 0).play('drillAnim')
+        this.drill.setSize(282, 580)
+        this.drill.setOffset(45, 40)
 
         this.score = 0;
 
@@ -33,7 +35,7 @@ class Play extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        this.showScore = this.add.text(85, 20, 'Waves Passed: ' + this.score, playConfig)
+        this.showScore = this.add.text(50, 20, 'Obstacles Dodged: ' + this.score, playConfig)
 
         this.gameOver = false
 
@@ -54,6 +56,11 @@ class Play extends Phaser.Scene {
 
         this.obstacleX = 50;
 
+        this.scoreArea.depth = 100;
+        this.showScore.depth = 101;
+
+        this.buttonPressed = false
+
         this.keys = this.input.keyboard.createCursorKeys()
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
@@ -61,25 +68,49 @@ class Play extends Phaser.Scene {
 
     update() {
         this.background.tilePositionY = Math.floor(this.background.tilePositionY + 4);
-        /*
-        if(Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
-            this.score += 10
-            this.showScore.text = 'Waves Passed: ' + this.score     
-        }
-        */
 
+        if (keyLEFT.isDown) {
+            this.buttonPressed = true;
+            this.drill.direction = -1; // Moving left
+        } 
+        else if (keyRIGHT.isDown) {
+            this.buttonPressed = true;
+            this.drill.direction = 1; // Moving right
+        }
+    
+        if (this.buttonPressed) {
+        // Apply velocity based on last direction
+            this.drill.setVelocityX(this.drill.direction * game.settings.moveSpeed);
+        }
+        
+        
+        // Prevent the drill from going off-screen
+        if (this.drill.x < 50) {
+            this.drill.x = 50;
+            this.drill.direction = 1; // Bounce off left wall
+        } 
+        else if (this.drill.x > game.config.width - 50) {
+            this.drill.x = game.config.width - 50;
+            this.drill.direction = -1; // Bounce off right wall
+        }
+        
+        this.showScore.text = 'Obstacles Dodged: ' + this.score     
+        
         this.obstacleX = Phaser.Math.Between(50, game.config.width - 50)
     }
 
     addObstacle() {
         //let speed = game.settings.moveSpeed
-        if(Phaser.Math.Between(0, 1) === 1) {
+        //console.log("addObstacle() called");
+        let rand = Math.random() < 0.5
+        console.log(rand ? "Fossil" : "Barrel");
+        if(rand) {
             let xPos = this.obstacleX //Phaser.Math.Between(50, game.config.width - 50)
             this.obstacle = new Fossil(this, xPos, game.config.height, 'fossil').setScale(0.5).setOrigin(0.5, 0)
         }
         else {
             let xPos = this.obstacleX//Phaser.Math.Between(50, game.config.width - 50)
-            this.obstacle = new Barrel(this, xPos, game.config.height, 'barrel').setScale(0.5).setOrigin(0.5, 0)
+            this.obstacle = new Barrel(this, xPos, game.config.height, 'barrel').setScale(0.25).setOrigin(0.5, 0)
         }
         this.obstacles.add(this.obstacle);
     }

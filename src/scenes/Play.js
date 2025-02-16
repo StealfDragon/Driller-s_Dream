@@ -92,7 +92,7 @@ class Play extends Phaser.Scene {
 
     update() {
         if(this.score > 0 && this.score % 5 == 0 && !this.leveled) {
-            game.settings.groundSpeed += 0.5
+            game.settings.groundSpeed += 1 // CHANGE THIS FOR DIFFICULTY
             console.log(game.settings.groundSpeed)
             this.leveled = true
         }
@@ -133,12 +133,12 @@ class Play extends Phaser.Scene {
             
             
             // Prevent the drill from going off-screen
-            if (this.drill.x < 50) {
-                this.drill.x = 50;
+            if (this.drill.x < 45) {
+                this.drill.x = 45;
                 this.drill.direction = 1; // Bounce off left wall
             } 
-            else if (this.drill.x > game.config.width - 50) {
-                this.drill.x = game.config.width - 50;
+            else if (this.drill.x > game.config.width - 45) {
+                this.drill.x = game.config.width - 45;
                 this.drill.direction = -1; // Bounce off right wall
             }
             

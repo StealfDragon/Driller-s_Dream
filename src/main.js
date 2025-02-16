@@ -1,7 +1,7 @@
 /********************************************************************************************************************************
 Cassian Jones
 Driller's Dream
-25 Hours
+30+ Hours
 Creative Tilt:
 1. 
 2. I've never seen an endless runner where the character is moving downwards, and I also haven't seen a system without gravity that forces the player to stay on top of the way their character moves

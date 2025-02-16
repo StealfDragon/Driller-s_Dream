@@ -43,6 +43,10 @@ class Play extends Phaser.Scene {
             runChildUpdate: true    // make sure update runs on group children
         });
 
+        this.obstacles.collisionCategory = 0x0001
+        
+        this.drill.body.setCollidesWith(0x0001)
+
         this.time.delayedCall(2500, () => { 
             this.addObstacle(); 
         });
@@ -67,36 +71,41 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        this.background.tilePositionY = Math.floor(this.background.tilePositionY + 4);
+        if(!this.gameOver) {
+            this.background.tilePositionY = Math.floor(this.background.tilePositionY + 4);
+        
 
-        if (keyLEFT.isDown) {
-            this.buttonPressed = true;
-            this.drill.direction = -1; // Moving left
-        } 
-        else if (keyRIGHT.isDown) {
-            this.buttonPressed = true;
-            this.drill.direction = 1; // Moving right
+            if (keyLEFT.isDown) {
+                this.buttonPressed = true;
+                this.drill.direction = -1; // Moving left
+            } 
+            else if (keyRIGHT.isDown) {
+                this.buttonPressed = true;
+                this.drill.direction = 1; // Moving right
+            }
+        
+            if (this.buttonPressed) {
+            // Apply velocity based on last direction
+                this.drill.setVelocityX(this.drill.direction * game.settings.moveSpeed);
+            }
+            
+            
+            // Prevent the drill from going off-screen
+            if (this.drill.x < 50) {
+                this.drill.x = 50;
+                this.drill.direction = 1; // Bounce off left wall
+            } 
+            else if (this.drill.x > game.config.width - 50) {
+                this.drill.x = game.config.width - 50;
+                this.drill.direction = -1; // Bounce off right wall
+            }
+            
+            this.showScore.text = 'Obstacles Dodged: ' + this.score    
+            
+            //this.physics.world.collide(this.drill, this.obstacles, this.drillCollision, null, this);
+            
+            this.obstacleX = Phaser.Math.Between(50, game.config.width - 50)
         }
-    
-        if (this.buttonPressed) {
-        // Apply velocity based on last direction
-            this.drill.setVelocityX(this.drill.direction * game.settings.moveSpeed);
-        }
-        
-        
-        // Prevent the drill from going off-screen
-        if (this.drill.x < 50) {
-            this.drill.x = 50;
-            this.drill.direction = 1; // Bounce off left wall
-        } 
-        else if (this.drill.x > game.config.width - 50) {
-            this.drill.x = game.config.width - 50;
-            this.drill.direction = -1; // Bounce off right wall
-        }
-        
-        this.showScore.text = 'Obstacles Dodged: ' + this.score     
-        
-        this.obstacleX = Phaser.Math.Between(50, game.config.width - 50)
     }
 
     addObstacle() {
@@ -113,6 +122,39 @@ class Play extends Phaser.Scene {
             this.obstacle = new Barrel(this, xPos, game.config.height, 'barrel').setScale(0.25).setOrigin(0.5, 0)
         }
         this.obstacles.add(this.obstacle);
+    }
+
+    drillCollision() {
+        console.log('drill collided')
+        this.gameOver = true
+
+        /*
+        paddle.destroyed = true;                    // turn off collision checking
+        this.difficultyTimer.destroy();             // shut down timer
+        this.sound.play('death', { volume: 0.25 }); // play death sound
+       
+        // kill paddle
+        paddle.destroy();    
+
+        // switch states after timer expires
+        this.time.delayedCall(4000, () => { this.scene.start('gameOverScene'); });
+        */
+    }
+
+    barrelExplode(barrel, barrelx, barrely) {
+        barrel.alpha = 0
+        // create explosion sprite at ship's position
+        let boom = this.add.sprite(barrelx, barrely, 'explosion').setScale(5).setOrigin(0.5, 0.5)
+        this.gameOver = true
+        this.drill.stop()
+        this.drill.setVelocityX(0)
+        boom.anims.play('explode')             // play explode animation
+        boom.on('animationcomplete', () => {   // callback after anim completes                  
+          barrel.destroy()                     // make ship visible again
+          boom.destroy()                     // remove explosion sprite
+        })
+
+        this.sound.play('sfx-explosion')  
     }
 
 }

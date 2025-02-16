@@ -37,7 +37,7 @@ class Title extends Phaser.Scene {
             key: 'explode',
             frames: this.anims.generateFrameNumbers('explosion', 
                 { start: 0, end: 3, first: 0}),
-            frameRate: 30
+            frameRate: 4
         })
         /*
         this.anims.create({

@@ -8,7 +8,7 @@ class Play extends Phaser.Scene {
         //this.background = this.add.tileSprite(0, 100, 2048, 2048, 'dirt2').setScale(0.55).setOrigin(0.2, 0)
         this.background = this.add.tileSprite(0, 100, 2048, 2048, 'dirt3').setScale(1).setOrigin(0, 0)
 
-        this.scoreArea = this.add.rectangle(0, 0, game.config.width, 100, 0x000000).setOrigin(0,0)
+        this.scoreArea = this.add.rectangle(0, 0, game.config.width, 100, 0x606060).setOrigin(0,0)
 
         this.anims.create({
             key: 'drillAnim',

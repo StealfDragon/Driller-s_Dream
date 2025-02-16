@@ -63,7 +63,12 @@ class Title extends Phaser.Scene {
 
         this.add.image(0, 100, 'dirt3').setScale(1).setOrigin(0, 0)
 
-        this.add.rectangle(0, 0, game.config.width, 100, 0x000000).setOrigin(0,0)
+        // black rectangle: this.add.rectangle(0, 0, game.config.width, 100, 0x000000).setOrigin(0,0)
+        this.add.rectangle(0, 0, game.config.width, 100, 0x606060).setOrigin(0,0)
+        this.add.rectangle(game.config.width/2, game.config.height/2 - 100, game.config.width - 175, 50, 0x606060).setOrigin(0.5)
+        this.add.rectangle(game.config.width/2, game.config.height/2 - 25, game.config.width - 200, 50, 0x606060).setOrigin(0.5)
+        this.add.rectangle(game.config.width/2, game.config.height/2 + 450, game.config.width - 300, 50, 0x000000).setOrigin(0.5)
+
 
         this.add.text(game.config.width/2, game.config.height/2 - 490, 
             'Driller\'s Dream', menuConfig).setOrigin(0.5)
@@ -71,7 +76,7 @@ class Title extends Phaser.Scene {
         menuConfig.fontSize = '30px'
         this.add.text(game.config.width/2, game.config.height/2 - 100, 
             'Press T to view the tutorial', menuConfig).setOrigin(0.5)
-        this.add.text(game.config.width/2, game.config.height/2 - 50, 
+        this.add.text(game.config.width/2, game.config.height/2 - 25, 
             'Press S to start the game', menuConfig).setOrigin(0.5)
 
         menuConfig.fontSize = '20px'

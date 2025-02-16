@@ -15,7 +15,7 @@ class Obstacle extends Phaser.Physics.Arcade.Sprite {
     update() {
         this.y -= 4// this.moveSpeed
 
-        if(this.newObstacle && this.y < centerY && this.texture == 'barrel') {
+        if(this.newObstacle && this.y < centerY && this.texture.key == 'barrel') {
             console.log('barrel spawn')
             this.parentScene.addObstacle();
             this.newObstacle = false;

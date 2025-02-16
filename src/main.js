@@ -3,7 +3,7 @@ Cassian Jones
 Driller's Dream
 30+ Hours
 Creative Tilt:
-1. I'm incredibly happy with the way that the game ends depending on what obstacle is hit.
+1. The trail left behind by the drill and making the hitbox (somewhat) follow the rotation both required some creative thinking 
 2. I've never seen an endless runner where the character is moving downwards, and I also haven't seen a system without gravity that forces the player to stay on top of the way their character moves
 ********************************************************************************************************************************/
 
@@ -14,7 +14,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: false,
+            debug: true,
             /*
             gravity: {
                 x: 0,

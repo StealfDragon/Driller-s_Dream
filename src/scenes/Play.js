@@ -88,6 +88,11 @@ class Play extends Phaser.Scene {
             loop: true 
         });
         this.bgm.play();
+
+        this.trail = this.add.graphics();
+        this.trail.fillStyle(0x4B2E1F, 1); // Dark brown color
+
+        this.drill.depth = 99
     }
 
     update() {
@@ -106,6 +111,14 @@ class Play extends Phaser.Scene {
             this.background.tilePositionY += game.settings.groundSpeed
 
             if(!(this.fossilCollided)) {
+                this.trailPositions = this.trailPositions || [];
+                this.trailPositions.push({ x: this.drill.x, y: this.drill.y + 20});
+
+                // Limit trail length
+                if (this.trailPositions.length > 30) {
+                    this.trailPositions.shift();
+                }
+                
                 if (keyLEFT.isDown) {
                     this.buttonPressed = true;
                     this.drill.direction = -1; // Moving left
@@ -119,6 +132,34 @@ class Play extends Phaser.Scene {
                 // Apply velocity based on last direction
                     this.drill.setVelocityX(this.drill.direction * game.settings.moveSpeed);
                 }
+            }
+            
+            if(this.drill.direction) {
+                
+                let targetAngle = -this.drill.direction * 20; // Max rotation ±15 degrees
+                this.drill.angle = Phaser.Math.Linear(this.drill.angle, targetAngle, 0.1);
+
+                let absAngle = Math.abs(this.drill.angle) / 15; // Normalize angle (0 to 1)
+                let newWidth = Phaser.Math.Linear(282, 220, absAngle); // Shrink width when tilted
+                let newOffsetX = Phaser.Math.Linear(45, 65, absAngle) * this.drill.direction; // Adjust offset
+
+                this.drill.body.setSize(30, 580); // Update body size
+                if(this.drill.direction == -1) {
+                    this.drill.body.setOffset(30 + newOffsetX, 15); 
+                }
+                else if (this.drill.direction == 1) {
+                    this.drill.body.setOffset(300 + newOffsetX, 20); 
+                }
+            }
+            
+
+            this.trail.clear();
+            this.trail.fillStyle(0x412212, 1);
+
+            // Draw trail moving upwards
+            for (let i = 0; i < this.trailPositions.length; i++) {
+                this.trailPositions[i].y -= game.settings.groundSpeed; // Move trail up
+                this.trail.fillCircle(this.trailPositions[i].x, this.trailPositions[i].y, 45);
             }
 
             if(this.fossilCollided) {

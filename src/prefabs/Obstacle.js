@@ -45,6 +45,10 @@ class Obstacle extends Phaser.Physics.Arcade.Sprite {
                 this.parentScene.barrelExplode(this, this.x, this.y)
                 this.hasExploded = true
             }
+
+            if(this.texture.key == 'fossil' && this.parentScene.physics.world.collide(this.parentScene.drill, this)) {
+                
+            }
         }
 
         /*

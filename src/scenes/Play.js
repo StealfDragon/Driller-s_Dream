@@ -148,10 +148,12 @@ class Play extends Phaser.Scene {
         this.gameOver = true
         this.drill.stop()
         this.drill.setVelocityX(0)
-        boom.anims.play('explode')             // play explode animation
+        boom.anims.play('explode')
+        this.drill.alpha = 0;
+        this.drill.destroy()            // play explode animation
         boom.on('animationcomplete', () => {   // callback after anim completes                  
-          barrel.destroy()                     // make ship visible again
-          boom.destroy()                     // remove explosion sprite
+            barrel.destroy()                     // make ship visible again
+            boom.destroy()                     // remove explosion sprite
         })
 
         this.sound.play('sfx-explosion')  

@@ -136,20 +136,49 @@ class Play extends Phaser.Scene {
             
             if(this.drill.direction) {
                 
+                /*
                 let targetAngle = -this.drill.direction * 20; // Max rotation ±15 degrees
                 this.drill.angle = Phaser.Math.Linear(this.drill.angle, targetAngle, 0.1);
+                */
 
+                if (this.drill.direction) {
+                    let touchingWall = (this.drill.x <= 45 || this.drill.x >= game.config.width - 45);
+                
+                    if (!touchingWall) {
+                        let targetAngle = -this.drill.direction * 20; // Max rotation ±20 degrees
+                        this.drill.angle = Phaser.Math.Linear(this.drill.angle, targetAngle, 0.1);
+                
+                        let absAngle = Math.abs(this.drill.angle) / 15; // Normalize angle (0 to 1)
+                        let newOffsetX = Phaser.Math.Linear(45, 65, absAngle) * this.drill.direction; // Adjust offset
+                
+                        this.drill.body.setSize(100, 580); // Update body size
+                        if (this.drill.direction == -1) {
+                            this.drill.body.setOffset(30 + newOffsetX, 15); 
+                        } else if (this.drill.direction == 1) {
+                            this.drill.body.setOffset(220 + newOffsetX, 20); 
+                        }
+                
+                    } else {
+                        // Reset rotation and hitbox when touching a wall
+                        this.drill.angle = 0;
+                        this.drill.body.setSize(350, 580); // Reset to default size
+                        this.drill.body.setOffset(10, 40); // Reset to default offset
+                    }
+                }
+
+                /*
                 let absAngle = Math.abs(this.drill.angle) / 15; // Normalize angle (0 to 1)
                 let newWidth = Phaser.Math.Linear(282, 220, absAngle); // Shrink width when tilted
                 let newOffsetX = Phaser.Math.Linear(45, 65, absAngle) * this.drill.direction; // Adjust offset
 
-                this.drill.body.setSize(30, 580); // Update body size
+                this.drill.body.setSize(100, 580); // Update body size
                 if(this.drill.direction == -1) {
                     this.drill.body.setOffset(30 + newOffsetX, 15); 
                 }
                 else if (this.drill.direction == 1) {
-                    this.drill.body.setOffset(300 + newOffsetX, 20); 
+                    this.drill.body.setOffset(220 + newOffsetX, 20); 
                 }
+                */
             }
             
 

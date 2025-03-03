@@ -96,7 +96,7 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        if(this.score > 0 && this.score % 5 == 0 && !this.leveled) {
+        if(this.score > 0 && this.score % 5 == 0 && !this.leveled && this.score <= 50) {
             game.settings.groundSpeed += 1 // CHANGE THIS FOR DIFFICULTY
             console.log(game.settings.groundSpeed)
             this.leveled = true

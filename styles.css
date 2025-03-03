@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'ArcadeFont';
+    src: url('assets/fonts/ArcadeClassic-ov2x.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.side-text {
+    font-family: 'ArcadeFont', sans-serif;
+    font-size: 200px;
+    color: white;
+    white-space: nowrap;
+}

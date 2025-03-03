@@ -22,8 +22,8 @@ class GameOver extends Phaser.Scene {
 
         // black rectangle: this.add.rectangle(0, 0, game.config.width, 100, 0x000000).setOrigin(0,0)
         this.add.rectangle(0, 0, game.config.width, 100, 0x606060).setOrigin(0,0)
-        this.add.rectangle(game.config.width/2, game.config.height/2 - 100, game.config.width - 100, 50, 0x606060).setOrigin(0.5)
-        this.add.rectangle(game.config.width/2, game.config.height/2 - 25, game.config.width - 165, 50, 0x606060).setOrigin(0.5)
+        this.add.rectangle(game.config.width/2, game.config.height/2 - 100, game.config.width - 105, 50, 0x606060).setOrigin(0.5)
+        this.add.rectangle(game.config.width/2, game.config.height/2 - 25, game.config.width - 100, 50, 0x606060).setOrigin(0.5)
 
 
         this.add.text(game.config.width/2, game.config.height/2 - 490, 
@@ -31,16 +31,16 @@ class GameOver extends Phaser.Scene {
 
         menuConfig.fontSize = '30px'
         this.add.text(game.config.width/2, game.config.height/2 - 100, 
-            'Press M to go to the main menu', menuConfig).setOrigin(0.5)
+            'Press Space to restart the game', menuConfig).setOrigin(0.5)
         this.add.text(game.config.width/2, game.config.height/2 - 25, 
-            'Press R to restart the game', menuConfig).setOrigin(0.5)
+            'Press M to go to the main menu', menuConfig).setOrigin(0.5)
 
         menuConfig.fontSize = '20px'
         this.add.text(game.config.width/2, game.config.height/2 + 450, 
             'Press C to view the credits', menuConfig).setOrigin(0.5)
 
         this.keys = this.input.keyboard.createCursorKeys()
-        keyRESTART = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
+        keyRESTART = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         keyMENU =  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M)
         keyCREDITS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
     }

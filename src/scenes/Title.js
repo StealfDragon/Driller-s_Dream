@@ -65,9 +65,9 @@ class Title extends Phaser.Scene {
 
         // black rectangle: this.add.rectangle(0, 0, game.config.width, 100, 0x000000).setOrigin(0,0)
         this.add.rectangle(0, 0, game.config.width, 100, 0x606060).setOrigin(0,0)
-        this.add.rectangle(game.config.width/2, game.config.height/2 - 100, game.config.width - 175, 50, 0x606060).setOrigin(0.5)
-        this.add.rectangle(game.config.width/2, game.config.height/2 - 25, game.config.width - 200, 50, 0x606060).setOrigin(0.5)
-        this.add.rectangle(game.config.width/2, game.config.height/2 + 450, game.config.width - 300, 50, 0x000000).setOrigin(0.5)
+        this.add.rectangle(game.config.width/2, game.config.height/2 - 100, game.config.width - 130, 50, 0x606060).setOrigin(0.5)
+        this.add.rectangle(game.config.width/2, game.config.height/2 - 25, game.config.width - 160, 50, 0x606060).setOrigin(0.5)
+        this.add.rectangle(game.config.width/2, game.config.height/2 + 450, game.config.width - 290, 50, 0x000000).setOrigin(0.5)
 
 
         this.add.text(game.config.width/2, game.config.height/2 - 490, 
@@ -75,9 +75,9 @@ class Title extends Phaser.Scene {
 
         menuConfig.fontSize = '30px'
         this.add.text(game.config.width/2, game.config.height/2 - 100, 
-            'Press T to view the tutorial', menuConfig).setOrigin(0.5)
+            'Press Space to start the game', menuConfig).setOrigin(0.5)
         this.add.text(game.config.width/2, game.config.height/2 - 25, 
-            'Press S to start the game', menuConfig).setOrigin(0.5)
+            'Press T to view the tutorial', menuConfig).setOrigin(0.5)
 
         menuConfig.fontSize = '20px'
         this.add.text(game.config.width/2, game.config.height/2 + 450, 
@@ -86,7 +86,7 @@ class Title extends Phaser.Scene {
         this.keys = this.input.keyboard.createCursorKeys()
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
-        keySTART = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
+        keySTART = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)
         keyTUTORIAL =  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T)
         keyCREDITS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
     }
